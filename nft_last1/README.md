@@ -8,4 +8,4 @@ ADDR_MARKET=0x874d1b65D5eFeAE884880B33557488f6726e0ABd ( lúc mà deploy marketp
 CHAIN_ID=1337
 
 # nhớ chỉnh phiên bản xuống 0.8.19 vì phiên bản này ổn định hơn 
-# ( Nhớ lúc mà compile ấy chỉnh xuống 0.8.19 cùng với cái pragma solidity ^0.8.19; ) với khi mà chỉnh xong và compile xong r ấy thì phải copy abi remix của myNFT và Maketplace vào thư mục abi của ứng dụng 
+# (  Lúc compile chỉnh xuống 0.8.19 cùng với cái pragma solidity ^0.8.19; ) với khi mà chỉnh xong và compile xong rồi thì phải copy abi remix của myNFT và Maketplace vào thư mục abi của ứng dụng 
