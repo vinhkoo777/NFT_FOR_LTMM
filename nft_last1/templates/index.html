@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NFT Demo (Flask + web3.py)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px; /* tăng khoảng cách giữa các section */
+    }
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 28px; /* tăng padding bên trong */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
+    }
+    form {
+      display: grid;
+      gap: 28px; /* tăng khoảng cách giữa các block */
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px; /* tăng khoảng cách giữa các cột */
+    }
+    .row > div {
+      display: flex;
+      flex-direction: column;
+      gap: 8px; /* label và input thoáng hơn */
+    }
+    label {
+      font-weight: 600;
+    }
+    input {
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    input:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+      width: 100%;
+      font-size: 15px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .msg {
+      margin-top: 16px;
+      padding: 14px;
+      background: #f3f4f6;
+      border-left: 4px solid #2563eb;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1> NFT Demo – Mint / List / Buy</h1>
+  <div class="container">
+
+    <!-- Mint -->
+    <section>
+      <h2>1) Mint NFT (Seller)</h2>
+      <form method="POST" action="/mint">
+        <div class="row">
+          <div>
+            <label>Token URI</label>
+            <input name="token_uri" placeholder="vd: ipfs://... hoặc https://..." required />
+          </div>
+        </div>
+        <button type="submit">Mint NFT</button>
+      </form>
+      {% if mint_tx %}<div class="msg">✅ Mint TX: {{ mint_tx }}</div>{% endif %}
+    </section>
+
+    <!-- Approve -->
+    <section>
+      <h2>2) Approve Marketplace (Seller)</h2>
+      <form method="POST" action="/approve">
+        <div class="row">
+          <div>
+            <label>Token ID</label>
+            <input name="token_id" type="number" min="1" required />
+          </div>
+        </div>
+        <button type="submit">Approve</button>
+      </form>
+      {% if approve_tx %}<div class="msg">✅ Approve TX: {{ approve_tx }}</div>{% endif %}
+    </section>
+
+    <!-- List -->
+    <section>
+      <h2>3) List NFT để bán (Seller)</h2>
+      <form method="POST" action="/list">
+        <div class="row">
+          <div>
+            <label>Token ID</label>
+            <input name="token_id" type="number" min="1" required />
+          </div>
+          <div>
+            <label>Giá (ETH)</label>
+            <input name="price_eth" type="text" placeholder="vd: 0.1" required />
+          </div>
+        </div>
+        <button type="submit">List NFT</button>
+      </form>
+      {% if list_tx %}<div class="msg">✅ List TX: {{ list_tx }}</div>{% endif %}
+    </section>
+
+    <!-- Buy -->
+    <section>
+      <h2>4) Mua NFT (Buyer)</h2>
+      <form method="POST" action="/buy">
+        <div class="row">
+          <div>
+            <label>Token ID</label>
+            <input name="token_id" type="number" min="1" required />
+          </div>
+          <div>
+            <label>Giá (ETH)</label>
+            <input name="price_eth" type="text" placeholder="đúng với giá đã list" required />
+          </div>
+        </div>
+        <button type="submit">Buy NFT</button>
+      </form>
+      {% if buy_tx %}<div class="msg">✅ Buy TX: {{ buy_tx }}</div>{% endif %}
+    </section>
+
+    <!-- Query -->
+    <section>
+      <h2>5) Tra cứu Listing</h2>
+      <form method="GET" action="/query">
+        <div class="row">
+          <div>
+            <label>Token ID</label>
+            <input name="token_id" type="number" min="1" required />
+          </div>
+        </div>
+        <button type="submit">Query</button>
+      </form>
+      {% if query %}
+        <div class="msg">{{ query }}</div>
+      {% endif %}
+    </section>
+
+  </div>
+</body>
+</html>
